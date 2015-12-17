@@ -81,14 +81,14 @@ public class UpdateVideoInfo extends DefaultFtplet {
                     if (!info.getResolution().getDescript().equals(m.group(2))) {
                         continue;
                     }
-                    info.setFileSize((int) (file.length() / 1024 / 1024));
+                    info.setFileSize(String.valueOf(file.length() / 1024 / 1024));
                     fileInfo = info;
                     break;
                 }
                 if (fileInfo == null) {
                     fileInfo = new VideoInfo();
-                    fileInfo.setResolution(VideoResolution.getResolutionByDescript(m.group(2)));
-                    fileInfo.setFileSize((int) (file.length() / 1024 / 1024));
+                    fileInfo.setResolution(VideoResolution.getByDescript(m.group(2)));
+                    fileInfo.setFileSize(String.valueOf(file.length() / 1024 / 1024));
                     switch (m.group(2)) {
                         case "720":
                             fileInfo.setWidth(1280);

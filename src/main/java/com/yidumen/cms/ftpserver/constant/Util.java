@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
 public class Util {
     private final static Logger log = LoggerFactory.getLogger(Util.class);
     public final static Pattern VIDEO_NAME = Pattern.compile("^(\\w{5})_(\\d{3})\\.mp4$");
-    public final static Pattern VIDEO_DL = Pattern.compile("^(\\w{5})_(.*\\W)_(\\d{3})\\.mp4$");
+//    public final static Pattern VIDEO_DL = Pattern.compile("^(\\w{5})_(.*\\W)_(\\d{3})\\.mp4$");
     public final static Pattern OSS_KEY;
     public final static Pattern VIDEO_TYPE;
 
