@@ -1,6 +1,5 @@
 package com.yidumen.cms.ftpserver.command;
 
-import static com.yidumen.cms.ftpserver.constant.Util.VIDEO_DL;
 import static com.yidumen.cms.ftpserver.constant.Util.VIDEO_NAME;
 import java.io.BufferedReader;
 import java.io.File;
@@ -31,8 +30,8 @@ public final class Deploy implements Command {
     private String batName;
     private String videoPath;
     private String dlPath;
-    private String dlmpgPath;
-    private String dlmp3Path;
+    private String mpgPath;
+    private String mp3Path;
 
     @Override
     public void execute(final FtpIoSession fis,
@@ -63,33 +62,34 @@ public final class Deploy implements Command {
             }
             console("找到文件" + filename);
             if (filename.endsWith("mp3")) {
-                deleteVideo(filename.split("_")[0], dlPath, "mp3");
-                final File dest = new File(dlmp3Path, filename);
+                deleteVideo(filename.split("\\.")[0], videoPath, "mp3");
+                final File dest = new File(mp3Path, filename);
                 file.renameTo(dest);
                 console("将音频" + file.getName() + "移动到相应目录");
                 deployFiles.add(dest);
             } else if (filename.endsWith("mpg")) {
-                deleteVideo(filename.split("_")[0], dlPath, "mpg");
-                final File dest = new File(dlmpgPath, filename);
+                deleteVideo(filename.split("\\.")[0], videoPath, "mpg");
+                final File dest = new File(mpgPath, filename);
                 file.renameTo(dest);
                 console("将视频" + file.getName() + "移动到相应目录");
                 deployFiles.add(dest);
             } else {
                 final Matcher videoMatcher = VIDEO_NAME.matcher(filename);
-                final Matcher dlMatcher = VIDEO_DL.matcher(filename);
+//                final Matcher dlMatcher = VIDEO_DL.matcher(filename);
                 if (videoMatcher.matches()) {
                     deleteVideo(videoMatcher.group(1), videoPath, videoMatcher.group(2));
                     final File dest = new File(videoPath + videoMatcher.group(2), filename);
                     file.renameTo(dest);
                     console("将视频" + file.getName() + "移动到相应目录");
                     deployFiles.add(dest);
-                } else if (dlMatcher.matches()) {
-                    deleteVideo(dlMatcher.group(1), dlPath, dlMatcher.group(3));
-                    final File dest = new File(dlPath + dlMatcher.group(3), filename);
-                    file.renameTo(dest);
-                    console("将视频" + file.getName() + "移动到相应目录");
-                    deployFiles.add(dest);
-                }
+                } 
+//                else if (dlMatcher.matches()) {
+//                    deleteVideo(dlMatcher.group(1), dlPath, dlMatcher.group(3));
+//                    final File dest = new File(dlPath + dlMatcher.group(3), filename);
+//                    file.renameTo(dest);
+//                    console("将视频" + file.getName() + "移动到相应目录");
+//                    deployFiles.add(dest);
+//                }
             }
         }
         fis.setAttribute("deployFiles", deployFiles);
@@ -111,7 +111,7 @@ public final class Deploy implements Command {
     }
 
     private void console(String message) {
-        fis.write(new DefaultFtpReply(666, message));
+        fis.write(new DefaultFtpReply(211, message));
     }
 
     public void setWorkdir(String workdir) {
@@ -126,14 +126,14 @@ public final class Deploy implements Command {
         if (!parent.endsWith(File.separator)) {
             parent = parent + File.separator;
         }
-        dlPath = parent + "video_dl" + File.separator;
-        log.debug("dlPath={}", dlPath);
-        dlmpgPath = dlPath + "mpg" + File.separator;
-        log.debug("dlmpgPath={}", dlmpgPath);
-        dlmp3Path = dlPath + "mp3" + File.separator;
-        log.debug("dlmp3Path={}", dlmp3Path);
+//        dlPath = parent + "video_dl" + File.separator;
+//        log.debug("dlPath={}", dlPath);
         videoPath = parent + "video" + File.separator;
         log.debug("videoPath={}", videoPath);
+        mpgPath = dlPath + "mpg" + File.separator;
+        log.debug("mpgPath={}", mpgPath);
+        mp3Path = dlPath + "mp3" + File.separator;
+        log.debug("mp3Path={}", mp3Path);
     }
 
 }

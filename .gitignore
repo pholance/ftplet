@@ -12,3 +12,6 @@
 hs_err_pid*
 /nbactions.xml
 .DS_Store
+
+ftplet-bundle.iml
+.idea
